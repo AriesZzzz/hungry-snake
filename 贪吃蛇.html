@@ -21,6 +21,7 @@
     <div class="map"></div>
 
     <script>
+        //随机数对象
         (function (window) {
             function Random() {
 
@@ -30,14 +31,14 @@
             }
             window.Random = new Random()
         })(window);
-        //产生小方块对象
+        //产生食物对象
         (function (window) {
-            let map = document.querySelector(".map")
+            // let map = document.querySelector(".map")
             let elements = [] //保存每个随机产生的食物，方便以后的删除
             function Food(width, height, color) {
                 this.width = width || 20
                 this.height = height || 20
-                this.color = color
+                this.color = color || "green"
                 this.x = 0
                 this.y = 0
                 this.element = document.createElement("div")
@@ -76,17 +77,97 @@
 
             }
             window.Food = Food
-            window.elements = elements
 
         })(window);
-        (function() {
+        //小蛇对象
+        (function () {
+            let elements = []
             function Snake(width, height, direction) {
+                this.width = width || 20
+                this.height = height || 20
+                this.body = [
+                    { x: 3, y: 2, color: "red" },
+                    { x: 2, y: 2, color: "green" },
+                    { x: 1, y: 2, color: "green" }
+
+                ]
+                this.direction = direction || "right"
+            }
+            Snake.prototype.init = function (map) {
+                remove()
+                for (let i = 0; i < this.body.length; i++) {
+                    let obj = this.body[i]
+                    let div = document.createElement("div")
+                    map.appendChild(div)
+                    this.render(div, obj)
+                    elements.push(div)
+                }
+            }
+            Snake.prototype.render = function (div, obj) {
+
+                div.style.position = "absolute"
+                div.style.width = this.width + "px"
+                div.style.height = this.height + "px"
+                div.style.left = (obj.x * this.width) + "px"
+                div.style.top = (obj.y * this.height) + "px"
+                div.style.backgroundColor = obj.color
 
             }
+            Snake.prototype.move = function (food, map) {
+                for (let i = this.body.length - 1; i > 0; i--) {
+                    this.body[i].x = this.body[i - 1].x
+                    this.body[i].y = this.body[i - 1].y
+                }
+                switch (this.direction) {
+                    case "right":
+                        this.body[0].x += 1
+                        break
+                    case "left":
+                        this.body[0].x -= 1
+                        break
+                    case "top":
+                        this.body[0].y -= 1
+                        break
+                    case "bottom":
+                        this.body[0].y += 1
+                        break
+                }
+            }
+            function remove() {
+                for (let i = elements.length - 1; i >= 0; i--) {
+                    let ele = elements[i]
+                    ele.parentNode.removeChild(ele)
+                    elements.splice(i, 1)
+                }
+
+            }
+            window.Snake = Snake
+        })();
+        //游戏对象
+        (function () {
+            function Game(map) {
+                this.food = new Food()
+                this.snake = new Snake()
+                this.map = map
+            }
+            Game.prototype.init = function () {
+                let _this = this
+                this.food.init(this.map)
+                this.snake.init(this.map)
+        
+                setInterval(function () {
+                    _this.snake.init(map)
+                    _this.snake.move()
+                }, 150)
+            }
+            window.Game = Game
+
         })()
 
-        let food = new Food(20, 20, "green")
-        food.init(document.querySelector(".map"))
+        let map = document.querySelector(".map")
+        let game = new Game(map)
+        game.init()
+
     </script>
 </body>
 
