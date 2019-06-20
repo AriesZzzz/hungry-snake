@@ -18,3 +18,6 @@ a funny game demo
 - 将每次产生的食物DOM对象`push`到数组中
 - 创建私有函数`remove`，并且在`init()`方法开头进行调用，目的是删除上一次产生的食物DOM对象
 - 最后将`Food`构造函数暴露给全局变量`window`
+
+### 小蛇对象
+
