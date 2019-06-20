@@ -73,7 +73,6 @@
                 this.y = y
                 this.element.style.left = this.x + "px"
                 this.element.style.top = this.y + "px"
-
             }
             window.Food = Food
 
@@ -153,7 +152,7 @@
                 let _this = this
                 this.food.init(this.map)
                 this.snake.init(this.map)
-        
+
                 setInterval(function () {
                     _this.snake.init(map)
                     _this.snake.move()
