@@ -1,5 +1,5 @@
-  //小蛇对象
-  (function () {
+//小蛇对象
+(function () {
     let elements = []
     function Snake(width, height, direction) {
         this.width = width || 20
@@ -21,6 +21,14 @@
             this.render(div, obj)
             elements.push(div)
         }
+    }
+    function remove() {
+        for (let i = elements.length - 1; i >= 0; i--) {
+            let ele = elements[i]
+            ele.parentNode.removeChild(ele)
+            elements.splice(i, 1)
+        }
+
     }
     Snake.prototype.render = function (div, obj) {
 
@@ -55,21 +63,16 @@
         let snakeHeadY = this.height * this.body[0].y
         if (snakeHeadX === food.x && snakeHeadY === food.y) {
             let snakeTail = this.body[this.body.length - 1]
+            //复制的这一份其实不重要，因为调用move方法时会被覆盖掉
             this.body.push({
                 x: snakeTail.x,
                 y: snakeTail.y,
                 color: snakeTail.color
             })
+
             food.init(map)
         }
     }
-    function remove() {
-        for (let i = elements.length - 1; i >= 0; i--) {
-            let ele = elements[i]
-            ele.parentNode.removeChild(ele)
-            elements.splice(i, 1)
-        }
 
-    }
     window.Snake = Snake
 })();

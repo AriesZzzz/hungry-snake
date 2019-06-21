@@ -47,7 +47,6 @@
     Game.prototype.bindKey = function () {
         let _this = this
         document.addEventListener('keydown', function (e) {
-            console.log(e.keyCode)
             switch (e.keyCode) {
                 case 37:
                     this.snake.direction = "left"
